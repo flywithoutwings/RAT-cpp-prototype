@@ -1,5 +1,6 @@
 #include "../Shared/NetworkUtilities.h"
 #include "../Shared/Utils.h"
+#include "ClientUtils.h"
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <Windows.h>
@@ -14,8 +15,15 @@ using namespace std;
 #define PORT 443
 #define BUF_SIZE 512
 
+string MAC;
 
 int main(int argc, char** argv) {
+	MAC = getMAC();
+
+	cout << MAC << endl;
+
+	system("pause");
+
 	WSAData wsaData;
 	if (WSAStartup(MAKEWORD(2, 1), &wsaData)) {
 #ifdef DEBUG

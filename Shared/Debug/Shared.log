@@ -1,3 +1,5 @@
 ﻿  Utils.cpp
+  NetworkUtilities.cpp
+  Generating Code...
 MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol _main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
 F:\Google Drive\-Otros\Programacion\c++\Trojan\Debug\Shared.exe : fatal error LNK1120: 1 unresolved externals

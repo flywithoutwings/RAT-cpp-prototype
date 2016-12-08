@@ -14,10 +14,6 @@ typedef struct {
 } SocketData;
 
 
-void SockDataFromBuffer(SocketData dest, const string& src);
-
-void bufferFromSockData(string& dest, const SocketData& src);
-
 void _send(SOCKET conn, const SocketData& src);
 void _send(SOCKET conn, const string& tag, const string& data);
 

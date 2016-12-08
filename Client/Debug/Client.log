@@ -1,2 +1,4 @@
-﻿  NetworkUtilities.cpp
+﻿  Main.cpp
+  ClientUtils.cpp
+  Generating Code...
   Client.vcxproj -> F:\Google Drive\-Otros\Programacion\c++\Trojan\Debug\Client.exe

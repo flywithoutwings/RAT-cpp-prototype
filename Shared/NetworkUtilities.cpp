@@ -1,6 +1,6 @@
 #include "NetworkUtilities.h"
 #include "Utils.h"
-#include <iostream>
+#include <iostream>	// REMOVE
 
 
 void _send(SOCKET conn, const SocketData& src)
@@ -14,7 +14,8 @@ void _send(SOCKET conn, const SocketData& src)
 	send(conn, src.data.c_str(), src.data.length(), NULL);	// Send data
 }
 
-void _send(SOCKET conn, const string& tag, const string& data) {
+void _send(SOCKET conn, const string& tag, const string& data) 
+{
 	SocketData sd;
 	sd.tag = tag;
 	sd.data = data;
@@ -31,8 +32,6 @@ void _recv(SOCKET conn, SocketData& dest)
 		
 	tag_len = ntohl(tag_len);									// Decode tag len
 	data_len = ntohl(data_len);									// Decode data len
-
-	cout << data_len << endl;
 
 	vector<char> tag_buffer(tag_len);
 	vector<char> data_buffer(data_len);
