@@ -59,6 +59,8 @@ int main(int argc, char** argv) {
 	cout << "MOTD:" << sData.data << endl;
 #endif
 
+	closesocket(conn);
+	WSACleanup();
 
 
 #ifdef DEBUG

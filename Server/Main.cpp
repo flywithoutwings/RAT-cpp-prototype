@@ -55,6 +55,8 @@ int main(int argc, char** argv) {
 
 	closesocket(sListen);
 	WSACleanup();
+
+	cout << endl << "\tEND" << endl;
 	system("pause");
 
 	return 0;
@@ -64,7 +66,7 @@ void clientThread(SOCKET conn)
 {
 	cout << "Client connected!" << endl;
 
-	_send(conn, "MOTD", "Welcome!");
+	_send(conn, SocketTag::CONNECT_REQ, "Welcome!");
 
 	SocketData sData;
 	_recv(conn, sData);

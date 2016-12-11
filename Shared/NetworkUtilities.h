@@ -8,13 +8,19 @@
 #include <vector>
 using namespace std;
 
+enum SocketTag : uint32_t
+{
+	MOTD,
+	CONNECT_REQ
+};
+
 typedef struct {
-	string tag;
+	SocketTag tag;
 	string data;
 } SocketData;
 
 
 void _send(SOCKET conn, const SocketData& src);
-void _send(SOCKET conn, const string& tag, const string& data);
+void _send(SOCKET conn, const SocketTag tag, const string& data);
 
 void _recv(SOCKET conn, SocketData& dest);
