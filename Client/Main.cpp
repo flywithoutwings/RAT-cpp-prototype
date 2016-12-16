@@ -49,21 +49,18 @@ int main(int argc, char** argv) {
 	cout << "Connected!" << endl;
 #endif
 
+	SocketData setIdSocket;
+	setIdSocket.tag = SocketTag::SET_ID;
+	setIdSocket.data = MAC;
+
+	_send(conn, setIdSocket);	// Send id to server
+
 	SocketData sData;
 	
 	while (true) {
 		_send(conn, SOCKET_NOP);
 		Sleep(2000);
-		SocketData d;
-		d.tag = SocketTag::SET_ID;
-		d.data = "hello world";
-		_send(conn, d);
-		Sleep(2000);
 	}
-
-#ifdef DEBUG
-	cout << "MOTD:" << sData.data << endl;
-#endif
 
 	closesocket(conn);
 	WSACleanup();

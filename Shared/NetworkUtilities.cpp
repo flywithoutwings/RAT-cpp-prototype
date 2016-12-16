@@ -76,7 +76,7 @@ int _recv_wait(SOCKET conn, SocketData& dest)	// Don't close on timeout
 
 	dest.tag = (SocketTag)tag;									// Assign tag to the destination SocketData
 
-	cout << "SOCKET: [" << dest.tag << "] -> " << dest.data << endl;	// SOCKET: [0] == NOP
+	//cout << "SOCKET: [" << dest.tag << "] -> " << dest.data << endl;	// SOCKET: [0] == NOP
 
 	return 0;
 }

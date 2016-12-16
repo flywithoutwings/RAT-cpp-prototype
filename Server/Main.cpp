@@ -76,7 +76,19 @@ void clientThread(SOCKET conn)
 	cout << "Client connected!" << endl;
 
 	while (true) {
-		// ...
+		Sleep(50);
+
+		while (!client.packets.empty()) {
+			SocketData packet = client.packets.back();
+			client.packets.pop();
+
+			switch (packet.tag) {
+				case SocketTag::SET_ID: {
+					client.id = packet.data;
+					break;
+				}
+			}
+		}
 	}
 
 	
