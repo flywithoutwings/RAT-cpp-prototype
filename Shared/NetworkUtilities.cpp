@@ -24,8 +24,7 @@ void _send(SOCKET conn, const SocketTag tag, const string& data)
 
 void _recv(SOCKET conn, SocketData& dest)
 {
-	uint32_t data_len;
-	uint32_t tag;
+	uint32_t data_len, tag;
 
 	recv(conn, (char*)&tag, sizeof(uint32_t), NULL);			// Recive tag
 	recv(conn, (char*)&data_len, sizeof(uint32_t), NULL);		// Recive data len
@@ -41,13 +40,35 @@ void _recv(SOCKET conn, SocketData& dest)
 	dest.tag = (SocketTag)tag;									// Assign tag to the destination SocketData
 
 	cout << "SOCKET: [" << dest.tag << "] -> " << dest.data << endl;
+}
 
-	switch (dest.tag) {
-	case SocketTag::CONNECT_REQ:
-		cout << "CONNECT_REQ" << endl;
-		break;
-	case SocketTag::MOTD:
-		cout << "MOTD" << endl;
-		break;
+void _recv_wait(SOCKET conn, SocketData& dest)	// Don't close on timeout
+{
+	uint32_t data_len, tag;
+	int rv = 0;
+
+	while (rv == 0) {
+		rv = recv(conn, (char*)&tag, sizeof(uint32_t), NULL);			// Recive tag
 	}
+	rv = 0;
+
+	while (rv == 0) {
+		rv = recv(conn, (char*)&data_len, sizeof(uint32_t), NULL);		// Recive data len
+	}
+	rv = 0;
+		
+	tag = (SocketTag)ntohl(tag);								// Decode tag
+	data_len = ntohl(data_len);									// Decode data len
+
+	vector<char> data_buffer(data_len);
+
+	while (rv == 0) {
+		rv = recv(conn, &(data_buffer[0]), data_len, NULL);				// Recive data
+	}
+	rv = 0;
+
+	dest.data.assign(&(data_buffer[0]), data_buffer.size());	// Assign data buffer to the destination SocketData
+	dest.tag = (SocketTag)tag;									// Assign tag to the destination SocketData
+
+	cout << "SOCKET: [" << dest.tag << "] -> " << dest.data << endl;
 }

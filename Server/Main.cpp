@@ -1,11 +1,13 @@
 #include "../Shared/NetworkUtilities.h"
 #include "../Shared/Utils.h"
+#include "Client.h"
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <Windows.h>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <thread>
 using namespace std;
 
@@ -15,6 +17,8 @@ using namespace std;
 #define BUF_SIZE 512
 
 void clientThread(SOCKET conn);
+
+map<string, Client> clients;
 
 int main(int argc, char** argv) {
 	WSAData wsaData;
@@ -64,12 +68,16 @@ int main(int argc, char** argv) {
 
 void clientThread(SOCKET conn)
 {
+	Client client;
+	client.conn = conn;
+
+	initCapture(&client);
+
 	cout << "Client connected!" << endl;
 
-	_send(conn, SocketTag::CONNECT_REQ, "Welcome!");
+	while (true) {
+		// ...
+	}
 
-	SocketData sData;
-	_recv(conn, sData);
-
-	cout << "ECHO:" << sData.tag << " -> " << sData.data << endl;
+	
 }

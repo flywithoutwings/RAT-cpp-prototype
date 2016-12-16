@@ -13,7 +13,6 @@ using namespace std;
 #define DEBUG
 #define ADDR "127.0.0.1"
 #define PORT 443
-#define BUF_SIZE 512
 
 string MAC;
 
@@ -52,8 +51,10 @@ int main(int argc, char** argv) {
 
 	SocketData sData;
 	
-	_recv(conn, sData);
-	_send(conn, sData);
+	while (true) {
+		_recv(conn, sData);
+		_send(conn, SOCKET_NOP);
+	}
 
 #ifdef DEBUG
 	cout << "MOTD:" << sData.data << endl;

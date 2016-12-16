@@ -10,8 +10,8 @@ using namespace std;
 
 enum SocketTag : uint32_t
 {
-	MOTD,
-	CONNECT_REQ
+	NOP,		// No operation -> pass
+	SET_ID,		// Set client id to server clients map
 };
 
 typedef struct {
@@ -19,8 +19,11 @@ typedef struct {
 	string data;
 } SocketData;
 
+const SocketData SOCKET_NOP { SocketTag::NOP, "" };		
+
 
 void _send(SOCKET conn, const SocketData& src);
 void _send(SOCKET conn, const SocketTag tag, const string& data);
 
 void _recv(SOCKET conn, SocketData& dest);
+void _recv_wait(SOCKET conn, SocketData& dest);
