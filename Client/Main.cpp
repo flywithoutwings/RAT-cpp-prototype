@@ -53,6 +53,12 @@ int main(int argc, char** argv) {
 	
 	while (true) {
 		_send(conn, SOCKET_NOP);
+		Sleep(2000);
+		SocketData d;
+		d.tag = SocketTag::SET_ID;
+		d.data = "hello world";
+		_send(conn, d);
+		Sleep(2000);
 	}
 
 #ifdef DEBUG

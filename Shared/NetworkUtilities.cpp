@@ -51,15 +51,13 @@ int _recv_wait(SOCKET conn, SocketData& dest)	// Don't close on timeout
 		recvReturn = recv(conn, (char*)&tag, sizeof(uint32_t), NULL);			// Recive tag
 		if (recvReturn == SOCKET_ERROR)
 			return SOCKET_ERROR;
-	}
-	recvReturn = 0;
+	} recvReturn = 0;
 
 	while (recvReturn == 0) {
 		recvReturn = recv(conn, (char*)&data_len, sizeof(uint32_t), NULL);		// Recive data len
 		if (recvReturn == SOCKET_ERROR)
 			return SOCKET_ERROR;
-	}
-	recvReturn = 0;
+	} recvReturn = 0;
 
 	tag = (SocketTag)ntohl(tag);								// Decode tag
 	data_len = ntohl(data_len);									// Decode data len
@@ -71,15 +69,14 @@ int _recv_wait(SOCKET conn, SocketData& dest)	// Don't close on timeout
 			recvReturn = recv(conn, &(data_buffer[0]), data_len, NULL);				// Recive data
 			if (recvReturn == SOCKET_ERROR)
 				return SOCKET_ERROR;
-		}
-		recvReturn = 0;
+		} recvReturn = 0;
 
 		dest.data.assign(&(data_buffer[0]), data_buffer.size());	// Assign data buffer to the destination SocketData
 	}
 
 	dest.tag = (SocketTag)tag;									// Assign tag to the destination SocketData
 
-	cout << "SOCKET: [" << dest.tag << "] -> " << dest.data << endl;
+	cout << "SOCKET: [" << dest.tag << "] -> " << dest.data << endl;	// SOCKET: [0] == NOP
 
 	return 0;
 }
