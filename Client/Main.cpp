@@ -52,7 +52,6 @@ int main(int argc, char** argv) {
 	SocketData sData;
 	
 	while (true) {
-		_recv(conn, sData);
 		_send(conn, SOCKET_NOP);
 	}
 

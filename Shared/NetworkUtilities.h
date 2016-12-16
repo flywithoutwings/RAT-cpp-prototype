@@ -26,4 +26,4 @@ void _send(SOCKET conn, const SocketData& src);
 void _send(SOCKET conn, const SocketTag tag, const string& data);
 
 void _recv(SOCKET conn, SocketData& dest);
-void _recv_wait(SOCKET conn, SocketData& dest);
+int _recv_wait(SOCKET conn, SocketData& dest);

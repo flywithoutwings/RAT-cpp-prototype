@@ -19,7 +19,12 @@ void captureThread(Client* client)
 		Sleep(CAPTURE_PACKETS_DELAY);
 
 		SocketData sData;
-		_recv_wait(client->conn, sData);
+		int error = _recv_wait(client->conn, sData);
+
+		if (error != 0) {
+			cout << "CLIENT DISCONNECTED" << endl;
+			return;
+		}
 
 		client->packets.push(sData);
 
