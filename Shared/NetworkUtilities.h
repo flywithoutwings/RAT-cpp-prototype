@@ -12,6 +12,7 @@ enum SocketTag : uint32_t
 {
 	NOP,		// No operation -> pass
 	SET_ID,		// Set client id to server clients map
+	EXEC,
 };
 
 typedef struct {

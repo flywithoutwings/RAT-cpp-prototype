@@ -149,12 +149,14 @@
     <ClCompile Include="..\Shared\NetworkUtilities.cpp" />
     <ClCompile Include="..\Shared\Utils.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Control.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Shared\NetworkUtilities.h" />
     <ClInclude Include="..\Shared\Utils.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Control.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

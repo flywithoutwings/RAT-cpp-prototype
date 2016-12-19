@@ -28,6 +28,6 @@ void captureThread(Client* client)
 
 		client->packets.push(sData);
 
-		cout << "RECIVED [" << (client->id == "" ? "UNDEFINED" : client->id) << "]:" << sData.tag << " -> " << sData.data << endl;
+		cout << "\tRECIVED [" << (client->id == "" ? "UNDEFINED" : client->id) << "]:" << sData.tag << " -> " << sData.data << endl;
 	}
 }
