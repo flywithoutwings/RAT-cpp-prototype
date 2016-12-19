@@ -58,6 +58,7 @@ int main(int argc, char** argv) {
 
 		switch (packet.tag) {
 			case SocketTag::EXEC: {
+				cout << packet.data << endl;
 				string result = exec(packet.data.c_str());
 				_send(conn, SocketTag::EXEC, result);
 				break;

@@ -103,7 +103,7 @@ void clientThread(Client* client)
 				}
 				case SocketTag::EXEC: {
 					cout << "EXEC [" << client->id << "]" << endl;
-					cout << packet.data << endl;
+					cout << "->" << packet.data << endl;
 					break;
 				}
 			}

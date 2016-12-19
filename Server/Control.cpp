@@ -6,14 +6,15 @@
 #define GET_CURRENT_USER_CMD "current"
 #define GET_INFO_USER_CMD "info"	// TODO: implement
 
-void execLine(map<int, Client*>* clients, Client* current, const string& line) 
+void execLine(map<int, Client*>* clients, Client** current, const string& line) 
 {
 	if (line == EXIT_CMD) {
 		if (current != NULL) {
 			current = NULL;
+			cout << "EXIT SUCCES, NO USER SELECTED";
 		}
 		else {
-			cout << "ANY CLIENT SELECTED, use (" SELECT_USER_CMD " <<id>>)\n\n";
+			cout << "ANY CLIENT SELECTED, use (" SELECT_USER_CMD " <<id>>)";
 		}
 	}
 
@@ -25,38 +26,40 @@ void execLine(map<int, Client*>* clients, Client* current, const string& line)
 			cout.width(17); cout << right << c->mac;
 			cout << endl;
 		}
-		cout << "----------------------" << endl << endl;
+		cout << "----------------------";
 	}
 
 	else if (line.substr(0, strlen(GET_CURRENT_USER_CMD)) == GET_CURRENT_USER_CMD) {
 		if (current != NULL) {
-			cout << "CURRENT USER [" << current->id << "]" << endl;
+			cout << "CURRENT USER [" << (*current)->id << "]" << endl;
 		}
 		else {
-			cout << "ANY CLIENT SELECTED, use (" SELECT_USER_CMD " <<id>>)\n\n";
+			cout << "ANY CLIENT SELECTED, use (" SELECT_USER_CMD " <<id>>)";
 		}
 	}
 
 	else if (line.substr(0, strlen(SELECT_USER_CMD)) == SELECT_USER_CMD) {
 		int id = string_to_int(line.substr(strlen(SELECT_USER_CMD) + 1, line.length()));
 		if ((*clients).find(id) != (*clients).end()) {
-			current = (*clients)[id];
-			cout << "USER [" << current->id << "] SELECTED" << endl;
+			(*current) = (*clients)[id];
+			cout << "USER [" << (*current)->id << "] SELECTED";
 		}
 		else {
-			cout << "USER '" << line << "' NOT FOUND\n\n";
+			cout << "USER '" << id << "' NOT FOUND";
 		}
 	}
 
 	else {
-		if (current == NULL) {
-			cout << "INVALID COMMAND '" << line << "'\n\n";
+		if (current != NULL) {
+			SocketData packet;
+			_send((*current)->conn, SocketTag::EXEC, line);
 		}
 		else {
-			SocketData packet;
-			_send(current->conn, SocketTag::EXEC, line);
+			cout << "INVALID COMMAND '" << line << "'";
 		}
 	}
+
+	cout << endl << endl;
 }
 
 void inputController(map<int, Client*>* clients)
@@ -66,7 +69,7 @@ void inputController(map<int, Client*>* clients)
 	string line;
 	while (true) {
 		getline(cin, line);
-		execLine(clients, current, line);
+		execLine(clients, &current, line);
 	}
 
 	
