@@ -1,6 +1,7 @@
 #include "../Shared/NetworkUtilities.h"
 #include "../Shared/Utils.h"
 #include "Client.h"
+#include "Control.h"
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <Windows.h>
@@ -44,6 +45,8 @@ int main(int argc, char** argv) {
 	listen(sListen, SOMAXCONN);
 
 	cout << "Server started on " << ADDR << ":" << PORT << endl << endl;
+
+	CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)inputController, (LPVOID)&clients, NULL, NULL);	// Create Control thread
 
 	while (true) {
 		SOCKET conn = INVALID_SOCKET;

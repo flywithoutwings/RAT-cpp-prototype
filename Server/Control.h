@@ -7,5 +7,5 @@
 #include <map>
 using namespace std;
 
-void inputController(map<string, Client>* clients);
+void inputController(map<string, Client*>* clients);
 void execLine(const string& line);
