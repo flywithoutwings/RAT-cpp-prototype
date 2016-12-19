@@ -9,8 +9,8 @@
 void execLine(map<int, Client*>* clients, Client** current, const string& line) 
 {
 	if (line == EXIT_CMD) {
-		if (current != NULL) {
-			current = NULL;
+		if ((*current) != NULL) {
+			(*current) = NULL;
 			cout << "EXIT SUCCES, NO USER SELECTED";
 		}
 		else {
@@ -30,7 +30,7 @@ void execLine(map<int, Client*>* clients, Client** current, const string& line)
 	}
 
 	else if (line.substr(0, strlen(GET_CURRENT_USER_CMD)) == GET_CURRENT_USER_CMD) {
-		if (current != NULL) {
+		if ((*current) != NULL) {
 			cout << "CURRENT USER [" << (*current)->id << "]" << endl;
 		}
 		else {
@@ -49,8 +49,17 @@ void execLine(map<int, Client*>* clients, Client** current, const string& line)
 		}
 	}
 
+	else if (line.substr(0, strlen(GET_INFO_USER_CMD)) == GET_INFO_USER_CMD) {
+		int id = string_to_int(line.substr(strlen(GET_INFO_USER_CMD) + 1, line.length()));
+		Client* c = (*clients)[id];
+		cout << "INFO [" << c->id << "]:" << endl;
+		cout << "\tSOCKET: " << c->conn << endl;
+		cout << "\tHANDLE: " << c->captureThreadHandle << endl;
+		cout << "\tMAC: " << c->mac << endl;
+	}
+
 	else {
-		if (current != NULL) {
+		if ((*current) != NULL) {
 			SocketData packet;
 			_send((*current)->conn, SocketTag::EXEC, line);
 		}
@@ -71,6 +80,4 @@ void inputController(map<int, Client*>* clients)
 		getline(cin, line);
 		execLine(clients, &current, line);
 	}
-
-	
 }
