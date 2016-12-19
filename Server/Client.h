@@ -11,7 +11,8 @@ typedef struct client_t {
 	SOCKET conn;
 	HANDLE captureThreadHandle;
 	queue<SocketData> packets;
-	string id;
+	string mac;
+	int id;
 } Client;
 
 void initCapture(Client* client);

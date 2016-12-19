@@ -1,6 +1,6 @@
 #include "Utils.h"
 
-int stoi(const string& val)
+int string_to_int(const string& val)
 {
 	int res;
 	stringstream ss(val);

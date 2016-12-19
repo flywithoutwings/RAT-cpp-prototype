@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Shared/Utils.h"
 #include "Client.h"
 #include <string.h>
 #include <Windows.h>
@@ -7,5 +8,5 @@
 #include <map>
 using namespace std;
 
-void inputController(map<string, Client*>* clients);
+void inputController(map<int, Client*>* clients);
 void execLine(const string& line);

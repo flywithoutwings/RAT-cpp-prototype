@@ -19,7 +19,9 @@ using namespace std;
 
 void clientThread(Client* client);
 
-map<string, Client*> clients;
+map<int, Client*> clients;
+
+int currentId = 0;
 
 int main(int argc, char** argv) {
 	WSAData wsaData;
@@ -57,12 +59,17 @@ int main(int argc, char** argv) {
 			continue;
 		}
 
-		SocketData idPacket;				//
-		Client* newClient = new Client;		//
-		newClient->conn = conn;				//
-		_recv(newClient->conn, idPacket);	//	Save newClient to clients map
-		newClient->id = idPacket.data;		//
-		clients[newClient->id] = newClient;	//
+		_send(conn, SocketTag::SET_ID, to_string(currentId));	// Send id to client
+
+		SocketData macPacket;					//
+		Client* newClient = new Client;			//
+		newClient->conn = conn;					//	
+		_recv(newClient->conn, macPacket);		//	Save newClient to clients map
+		newClient->id = currentId;				//
+		newClient->mac = macPacket.data;		//
+		clients[newClient->id] = newClient;		//
+
+		currentId++;
 
 		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)clientThread, (LPVOID)newClient, NULL, NULL);
 	}
@@ -90,11 +97,15 @@ void clientThread(Client* client)
 			(*client).packets.pop();
 
 			switch (packet.tag) {
-			case SocketTag::EXEC: {
-				cout << "EXEC [" << client->id << "]" << endl;
-				cout << packet.data << endl;
-				break;
-			}
+				case SocketTag::SET_MAC: {
+					client->mac = packet.data;
+					break;
+				}
+				case SocketTag::EXEC: {
+					cout << "EXEC [" << client->id << "]" << endl;
+					cout << packet.data << endl;
+					break;
+				}
 			}
 		}
 	}

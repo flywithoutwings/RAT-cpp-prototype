@@ -6,5 +6,5 @@
 using namespace std;
 
 
-int stoi(const string& val);
+int string_to_int(const string& val);
 vector<string> split(const string& src, char delimiter);
