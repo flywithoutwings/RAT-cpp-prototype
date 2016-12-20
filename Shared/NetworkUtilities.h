@@ -14,6 +14,9 @@ enum SocketTag : uint32_t
 	SET_ID,		// Set client id to server clients map
 	SET_MAC,
 	EXEC,
+	SET_CMD_DIR,
+	SET_CMD_DISK,
+	GET_CMD_DIR,
 };
 
 typedef struct {

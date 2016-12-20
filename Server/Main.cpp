@@ -103,7 +103,11 @@ void clientThread(Client* client)
 				}
 				case SocketTag::EXEC: {
 					cout << "EXEC [" << client->id << "]" << endl;
-					cout << "->" << packet.data << endl;
+					cout << "->" << packet.data << "\n\n\n";
+					break;
+				}
+				case SocketTag::GET_CMD_DIR: {
+					cout << "USER [" << client->id << "] CURRENT DIR -> " << packet.data << "\n\n\n";
 					break;
 				}
 			}

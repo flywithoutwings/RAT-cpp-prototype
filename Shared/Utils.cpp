@@ -24,3 +24,31 @@ vector<string> split(const string& src, char delimiter)
 
 	return res;
 }
+
+string parseDir(vector<string>& dir)
+{
+	string result = "";
+
+	for (int i = 0; i < dir.size(); i++) {
+		result += dir[i];
+		if (i < dir.size() - 1)
+			result += "\\";
+	}
+
+	return result;
+}
+
+void parseDir(vector<string>& dest, const string& dir)
+{
+	string current;
+
+	for (int i = 0; i < dir.length(); i++) {
+		if (dir[i] == '\\') {
+			dest.push_back(current);
+			current = "";
+		}
+		else {
+			current += dir[i];
+		}
+	}
+}

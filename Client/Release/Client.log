@@ -1,8 +1,7 @@
-﻿  NetworkUtilities.cpp
-  Utils.cpp
-  ClientUtils.cpp
-  Main.cpp
+﻿  Main.cpp
   Generating code
+  47 of 1042 functions ( 4.5%) were compiled, the rest were copied from previous compilation.
   Finished generating code
-  All 1030 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+    5 functions were new in current compilation
+    22 functions had inline decision re-evaluated but remain unchanged
   Client.vcxproj -> F:\Google Drive\-Otros\Programacion\c++\Trojan\Release\Client.exe
